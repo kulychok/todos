@@ -1,0 +1,5 @@
+export const STATUS = {
+  ACTIVE: 'ACTIVE',
+  COMPLETED: 'COMPLETED',
+  DELETED: 'DELETED',
+};

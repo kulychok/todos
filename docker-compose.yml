@@ -1,0 +1,24 @@
+version: '3.7'
+services:
+  api:
+    depends_on:
+      - db
+    build: ./services/api
+    ports:
+      - '3030:3030'
+    container_name: todo-api
+  db:
+    image: postgres
+    ports:
+      - '5432:5432'
+    environment:
+      - POSTGRES_DB=todos
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=v69n72
+    container_name: todo-db
+
+  client:
+    build: ./services/client
+    ports:
+      - '3000:3000'
+    container_name: todo-client
