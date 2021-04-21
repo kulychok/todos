@@ -2,7 +2,5 @@ node_modules/
 
 services/api/node_modules/
 services/api/.env
-services/api/.babelrc
-services/api/.sequelizerc
 
 services/client/node_modules/

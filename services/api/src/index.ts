@@ -20,11 +20,12 @@ const start = () => {
 
   connect();
 
-  app.listen(PORT);
-
+  const server = app.listen(PORT);
   console.log(`Server started on ${PORT} port!`);
 
-  return app;
+  return { app, server };
 };
 
-start();
+const { app, server } = start();
+
+export { app, server };

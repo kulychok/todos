@@ -1,7 +1,7 @@
 import db from '../../../models/';
 import bcrypt = require('bcrypt');
 import { generateAccessToken } from '../../../helpers/jwtHandlers';
-import { resolve, wrongAuthData } from '../../../helpers/resolvers';
+import { reject, resolve, wrongAuthData } from '../../../helpers/resolvers';
 import { isValidEmail, isValidPassword } from '../../../helpers/validators';
 
 const { User, RefreshToken } = db;
@@ -17,9 +17,10 @@ export = async (ctx): Promise<object> => {
   }
   const isAlreadySigned = await User.findOne({ where: { email } });
   if (isAlreadySigned) {
-    return resolve(ctx, {
+    reject(ctx, {
       message: 'This email already signed up',
     });
+    return;
   }
 
   if (!isValidPassword(password)) {

@@ -1,9 +1,7 @@
-import { Context } from 'koa';
 import { reject } from '../helpers/resolvers';
 import { verifyJWT } from '../helpers/jwtHandlers';
-import IKoaNext from '../types/IKoaNext';
 
-const checkAuthorization = async (ctx: Context<any>, next: IKoaNext) => {
+const checkAuthorization = async (ctx: any, next: any) => {
   try {
     const authorization = ctx.cookies.get('accessToken');
     if (!authorization) {

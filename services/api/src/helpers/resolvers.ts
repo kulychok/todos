@@ -2,7 +2,7 @@ import { Response } from '../types';
 
 const resolve = (
   ctx: any,
-  { status = 200, message = '', body = null }
+  { status = 200, message = '', body = {} }
 ): Response => {
   ctx.status = status;
   ctx.message = message;

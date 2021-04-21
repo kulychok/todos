@@ -1,6 +1,6 @@
 import { Op } from 'sequelize';
 import { STATUS } from '../../../../constants/status';
-import { resolve } from '../../../../helpers/resolvers';
+import { reject, resolve } from '../../../../helpers/resolvers';
 import db from '../../../../models';
 
 const { Todo } = db;
@@ -17,5 +17,5 @@ export default async (ctx): Promise<object> => {
     return resolve(ctx, { body: todo });
   }
 
-  return resolve(ctx, { status: 400, message: 'Todo not found' });
+  reject(ctx, { status: 400, message: 'Todo not found' });
 };

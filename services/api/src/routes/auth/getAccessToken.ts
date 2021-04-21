@@ -1,4 +1,3 @@
-import { Context, Next } from 'koa';
 import db from '../../models';
 import bcrypt = require('bcrypt');
 import { generateAccessToken } from '../../helpers/jwtHandlers';
@@ -10,7 +9,7 @@ interface Body {
   refreshToken;
 }
 
-export = async (ctx: Context) => {
+export = async (ctx: any) => {
   const { refreshToken } = ctx.request.body;
 
   const token = await RefreshToken.findOne({
@@ -30,6 +29,7 @@ export = async (ctx: Context) => {
     httpOnly: false,
     secure: false,
   });
+
   ctx.cookies.set('refreshToken', newRefreshToken, {
     httpOnly: false,
     secure: false,
