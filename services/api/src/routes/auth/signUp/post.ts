@@ -3,17 +3,25 @@ import bcrypt = require('bcrypt');
 import { generateAccessToken } from '../../../helpers/jwtHandlers';
 import { reject, resolve, wrongAuthData } from '../../../helpers/resolvers';
 import { isValidEmail, isValidPassword } from '../../../helpers/validators';
+import { Context } from 'koa';
+import { IFormatUser, IResponse } from '../../../types';
 
 const { User, RefreshToken } = db;
 
-export = async (ctx): Promise<object> => {
+interface ISignUpBody {
+  user: IFormatUser;
+}
+
+export = async (ctx: Context): Promise<IResponse<ISignUpBody>> => {
   const { email, password } = ctx.request.body;
   if (!email || !password) {
-    return wrongAuthData(ctx);
+    wrongAuthData(ctx);
+    return;
   }
 
   if (!isValidEmail(email)) {
-    return wrongAuthData(ctx);
+    wrongAuthData(ctx);
+    return;
   }
   const isAlreadySigned = await User.findOne({ where: { email } });
   if (isAlreadySigned) {
@@ -24,7 +32,8 @@ export = async (ctx): Promise<object> => {
   }
 
   if (!isValidPassword(password)) {
-    return wrongAuthData(ctx);
+    wrongAuthData(ctx);
+    return;
   }
 
   const hashedPassword = await bcrypt.hash(password, 12);

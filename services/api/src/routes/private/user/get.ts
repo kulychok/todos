@@ -1,9 +1,11 @@
 import db from '../../../models/index';
 import { reject, resolve } from '../../../helpers/resolvers';
+import { Context } from 'koa';
+import { IFormatUser } from '../../../types';
 
 const { User } = db;
 
-export = async (ctx) => {
+export = async (ctx: Context): Promise<IFormatUser> => {
   const user = await User.findOne({
     where: { id: ctx.userId },
   });

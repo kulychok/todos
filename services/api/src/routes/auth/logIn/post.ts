@@ -2,21 +2,29 @@ import bcrypt = require('bcrypt');
 import db from '../../../models';
 import { generateAccessToken } from '../../../helpers/jwtHandlers';
 import { resolve, wrongAuthData } from '../../../helpers/resolvers';
+import { Context } from 'koa';
+import { IFormatUser } from '../../../types';
 
 const { User, RefreshToken } = db;
 
-export = async (ctx): Promise<object> => {
+interface ILogInBody {
+  user: IFormatUser;
+}
+
+export = async (ctx: Context): Promise<ILogInBody> => {
   const { email, password } = ctx.request.body;
 
   let user: typeof User = await User.findOne({ where: { email } });
 
   if (!user) {
-    return wrongAuthData(ctx);
+    wrongAuthData(ctx);
+    return;
   }
 
   const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) {
-    return wrongAuthData(ctx);
+    wrongAuthData(ctx);
+    return;
   }
 
   const accessToken = generateAccessToken({ userId: user.id });

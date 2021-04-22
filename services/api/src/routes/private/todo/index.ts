@@ -1,10 +1,10 @@
-import router = require('koa-router');
+import Router = require('koa-router');
 import post = require('./post');
 import byId = require('./byId');
 import get = require('./get');
 import filters = require('./filters');
 
-const todoRoutes = router();
+const todoRoutes = new Router();
 
 todoRoutes.post('/', post);
 todoRoutes.get('/', get);

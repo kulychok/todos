@@ -1,8 +1,8 @@
-import router = require('koa-router');
+import Router = require('koa-router');
 import todo = require('./todo');
 import user = require('./user');
 
-const privateRoutes = router();
+const privateRoutes = new Router();
 
 privateRoutes.use('/todo', todo);
 privateRoutes.use('/user', user);

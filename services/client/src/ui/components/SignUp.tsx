@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import * as React from 'react';
+import { useCallback, ChangeEvent } from 'react';
 import { changeAuthFields, signUpHandler } from '../../app/auth/actionCreators';
 import { AppDispatch, RootState } from '../../types';
 import { memo } from 'react';
@@ -25,6 +26,38 @@ const SignUp = (props: ISignUpProps) => {
     passwordErrorMessage,
   } = props;
 
+  const changeEmailHandler = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) =>
+      changeAuthFields(
+        event.target.value,
+        authUser.password,
+        authUser.repeatedPassword
+      ),
+    [authUser]
+  );
+
+  const changePasswordHandler = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) =>
+      changeAuthFields(
+        authUser.email,
+        event.target.value,
+        authUser.repeatedPassword
+      ),
+    [authUser]
+  );
+
+  const changeRepeatedPasswordHandler = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) =>
+      changeAuthFields(authUser.email, authUser.password, event.target.value),
+    [authUser]
+  );
+
+  const signUpSubmitHandler = useCallback(() => {
+    if (authUser.password === authUser.repeatedPassword) {
+      signUpHandler(authUser.email, authUser.password);
+    }
+  }, [authUser]);
+
   return (
     <div className='auth-form'>
       <input
@@ -32,13 +65,7 @@ const SignUp = (props: ISignUpProps) => {
         type='email'
         placeholder='Email'
         value={authUser.email}
-        onChange={(event) =>
-          changeAuthFields(
-            event.target.value,
-            authUser.password,
-            authUser.repeatedPassword
-          )
-        }
+        onChange={changeEmailHandler}
       ></input>
       <div className={emailErrorMessage ? 'auth-error-message' : ' hidden'}>
         {emailErrorMessage}
@@ -48,26 +75,14 @@ const SignUp = (props: ISignUpProps) => {
         type='password'
         placeholder='Password'
         value={authUser.password}
-        onChange={(event) =>
-          changeAuthFields(
-            authUser.email,
-            event.target.value,
-            authUser.repeatedPassword
-          )
-        }
+        onChange={changePasswordHandler}
       ></input>
       <input
         className='auth-input'
         type='password'
         placeholder='Repeat password'
         value={authUser.repeatedPassword}
-        onChange={(event) =>
-          changeAuthFields(
-            authUser.email,
-            authUser.password,
-            event.target.value
-          )
-        }
+        onChange={changeRepeatedPasswordHandler}
       ></input>
       <div className={passwordErrorMessage ? 'auth-error-message' : ' hidden'}>
         {passwordErrorMessage}
@@ -75,11 +90,7 @@ const SignUp = (props: ISignUpProps) => {
       <input
         className='submit-btn'
         type='submit'
-        onClick={() => {
-          if (authUser.password === authUser.repeatedPassword) {
-            signUpHandler(authUser.email, authUser.password);
-          }
-        }}
+        onClick={signUpSubmitHandler}
       ></input>
     </div>
   );

@@ -1,12 +1,14 @@
+import { Context } from 'koa';
 import { Op } from 'sequelize';
 import { STATUS } from '../../../../constants/status';
 import { reject, resolve } from '../../../../helpers/resolvers';
 import db from '../../../../models';
+import { ITodo } from '../../../../types';
 
 const { Todo } = db;
 const { not } = Op;
 
-export default async (ctx): Promise<object> => {
+export default async (ctx: Context): Promise<ITodo> => {
   const { id } = ctx.params;
 
   const { dataValues: todo } = await Todo.findOne({

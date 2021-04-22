@@ -1,12 +1,13 @@
-import router = require('koa-router');
+import Router from 'koa-router';
 import checkAuthorization from '../middleware/checkAuth';
 import authRoutes = require('./auth');
 import privateRoutes = require('./private');
+import KoaBodyParser from 'koa-bodyparser';
 
-const routes = router();
+const router = new Router();
 
-routes.use('/private', checkAuthorization, privateRoutes);
+router.use('/private', checkAuthorization, privateRoutes);
 
-routes.use('/auth', authRoutes);
+router.use('/auth', authRoutes);
 
-export = routes.routes();
+export = router.routes();

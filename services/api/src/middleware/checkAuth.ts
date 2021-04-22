@@ -1,7 +1,8 @@
 import { reject } from '../helpers/resolvers';
 import { verifyJWT } from '../helpers/jwtHandlers';
+import { Context, Next } from 'koa';
 
-const checkAuthorization = async (ctx: any, next: any) => {
+const checkAuthorization = async (ctx: Context, next: Next): Promise<void> => {
   try {
     const authorization = ctx.cookies.get('accessToken');
     if (!authorization) {

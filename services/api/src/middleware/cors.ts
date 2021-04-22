@@ -1,7 +1,9 @@
-const corsRules = async (ctx, next: any): Promise<void> => {
+import { Context, Next } from 'koa';
+
+const corsRules = async (ctx: Context, next: Next): Promise<void> => {
   ctx.set('Access-Control-Allow-Origin', 'http://127.0.0.1:3000');
 
-  ctx.set('Access-Control-Allow-Credentials', true);
+  ctx.set('Access-Control-Allow-Credentials', 'true');
 
   ctx.set(
     'Access-Control-Allow-Headers',

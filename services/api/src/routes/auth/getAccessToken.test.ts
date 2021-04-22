@@ -1,7 +1,6 @@
 import agent from 'supertest-koa-agent';
 import { app, server } from '../../index';
 import db from '../../models';
-import { generateAccessToken } from '../../helpers/jwtHandlers';
 
 const { RefreshToken } = db;
 

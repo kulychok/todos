@@ -4,15 +4,17 @@ import { resolve } from '../../../helpers/resolvers';
 import { PAGE_LIMIT } from '../../../constants/pageLimit';
 import { STATUS } from '../../../constants/status';
 import getCount from '../../../middleware/getCount';
+import { Context } from 'koa';
+import { IGetTodoListBody } from '../../../types';
 
 const { Todo } = db;
 const { not } = Op;
 
-export = async (ctx): Promise<object> => {
+export = async (ctx: Context): Promise<IGetTodoListBody> => {
   const { page = 0 } = ctx.query;
 
   const limit = PAGE_LIMIT;
-  const offset = page * limit;
+  const offset = +page * limit;
 
   const todoList = await Todo.findAll({
     limit,

@@ -2,6 +2,8 @@ import db from '../../models';
 import bcrypt = require('bcrypt');
 import { generateAccessToken } from '../../helpers/jwtHandlers';
 import { resolve } from '../../helpers/resolvers';
+import { Context } from 'koa';
+import { IResponse } from '../../types';
 
 const { RefreshToken } = db;
 
@@ -9,7 +11,7 @@ interface Body {
   refreshToken;
 }
 
-export = async (ctx: any) => {
+export = async (ctx: Context): Promise<void> => {
   const { refreshToken } = ctx.request.body;
 
   const token = await RefreshToken.findOne({

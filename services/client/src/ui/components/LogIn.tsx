@@ -1,5 +1,6 @@
 import { connect } from 'react-redux';
 import * as React from 'react';
+import { useCallback, ChangeEvent } from 'react';
 import { changeAuthFields, logInHandler } from '../../app/auth/actionCreators';
 import { memo } from 'react';
 import { AppDispatch, RootState } from '../../types';
@@ -22,6 +23,24 @@ const LogIn = (props: ILogInProps) => {
   } = props;
   // const status = React.useMemo(() => (error ? 'error' : 'valid'), [error]);
 
+  const changeEmailHandler = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) =>
+      changeAuthFields(event.target.value, authUser.password),
+    [authUser]
+  );
+
+  const changePasswordHandler = useCallback(
+    (event: ChangeEvent<HTMLInputElement>) =>
+      changeAuthFields(authUser.email, event.target.value),
+    [authUser]
+  );
+
+  const logInSubmitHandler = useCallback(() => {
+    if (!passwordErrorMessage && !emailErrorMessage) {
+      logInHandler(authUser.email, authUser.password);
+    }
+  }, [authUser]);
+
   return (
     <div className='auth-form'>
       <input
@@ -31,9 +50,7 @@ const LogIn = (props: ILogInProps) => {
         type='email'
         value={authUser.email}
         placeholder='Email'
-        onChange={(event) =>
-          changeAuthFields(event.target.value, authUser.password)
-        }
+        onChange={changeEmailHandler}
       ></input>
 
       <div className={emailErrorMessage ? 'auth-error-message' : ' hidden'}>
@@ -44,9 +61,7 @@ const LogIn = (props: ILogInProps) => {
         type='password'
         value={authUser.password}
         placeholder='Password'
-        onChange={(event) =>
-          changeAuthFields(authUser.email, event.target.value)
-        }
+        onChange={changePasswordHandler}
       ></input>
 
       {passwordErrorMessage && (
@@ -56,11 +71,7 @@ const LogIn = (props: ILogInProps) => {
       <input
         className='submit-btn'
         type='submit'
-        onClick={() => {
-          if (!passwordErrorMessage && !emailErrorMessage) {
-            logInHandler(authUser.email, authUser.password);
-          }
-        }}
+        onClick={logInSubmitHandler}
       ></input>
     </div>
   );

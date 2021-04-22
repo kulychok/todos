@@ -1,4 +1,6 @@
-const errorHandler = async (ctx: any, next: any): Promise<void> => {
+import { Context, Next } from 'koa';
+
+const errorHandler = async (ctx: Context, next: Next): Promise<void> => {
   try {
     await next();
   } catch (err) {

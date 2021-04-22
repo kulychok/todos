@@ -1,9 +1,9 @@
-import router = require('koa-router');
+import Router = require('koa-router');
 import patch from './patch';
 import get from './get';
 import del from './delete';
 
-const byId = router();
+const byId = new Router();
 
 byId.get('/', get);
 byId.patch('/', patch);

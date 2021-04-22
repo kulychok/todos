@@ -1,10 +1,11 @@
+import { Context } from 'koa';
 import { STATUS } from '../../../constants/status';
 import { resolve } from '../../../helpers/resolvers';
 import db from '../../../models/index';
 
 const { Todo } = db;
 
-export = async (ctx): Promise<object> => {
+export = async (ctx: Context): Promise<void> => {
   let { title, status } = await ctx.request.body;
 
   if (!status) status = STATUS.ACTIVE;
