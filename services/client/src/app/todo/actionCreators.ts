@@ -5,12 +5,16 @@ import {
   CHANGE_CURRENT_PAGE,
   CHANGE_FILTER_TYPE,
   CHANGE_NEW_TODO_TITLE,
+  DELETE_COMPLETED_REQUEST,
+  DELETE_COMPLETED_SUCCESS,
   DELETE_TODO_REQUEST,
   DELETE_TODO_SUCCESS,
   EDIT_TODO_REQUEST,
   EDIT_TODO_SUCCESS,
   GET_TODO_LIST_REQUEST,
   GET_TODO_LIST_SUCCESS,
+  PATCH_TO_ACTIVE_REQUEST,
+  PATCH_TO_COMPLETED_REQUEST,
 } from '../../constants/actionTypes';
 
 export const getTodoListRequest = (page: number, filterType?: string) => ({
@@ -83,3 +87,21 @@ export const getTodoListSuccess = (todoData) => ({
 });
 
 export const addTodoSuccess = () => ({ type: ADD_TODO_SUCCESS });
+
+export const deleteCompleted = (page: number, filterType?: string) => ({
+  type: DELETE_COMPLETED_REQUEST,
+  page,
+  filterType,
+});
+
+export const patchToActive = (page: number, filterType?: string) => ({
+  type: PATCH_TO_ACTIVE_REQUEST,
+  page,
+  filterType,
+});
+
+export const patchToCompleted = (page: number, filterType?: string) => ({
+  type: PATCH_TO_COMPLETED_REQUEST,
+  page,
+  filterType,
+});

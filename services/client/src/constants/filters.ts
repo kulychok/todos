@@ -5,11 +5,11 @@ const FILTERS = {
   },
   ACTIVE: {
     value: 'ACTIVE',
-    label: '',
+    label: 'active',
   },
   COMPLETED: {
     value: 'COMPLETED',
-    label: '',
+    label: 'completed',
   },
 };
 

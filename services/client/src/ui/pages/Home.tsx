@@ -5,21 +5,21 @@ import { memo } from 'react';
 import ErrorMessage from '../components/ErrorMessage';
 import CreateTodoField from '../components/CreateTodoField';
 import TodoList from '../components/TodoList';
-import Filters from '../components/Filters';
+import Filters from '../components/TodoListFooter';
 import FILTERS from '../../constants/filters';
 import Paginator from '../components/Paginator';
-import Counter from '../components/Counter';
 import UserBlock from '../components/UserBlock';
 import { ReactElement } from 'react';
 import {
   changeCurrentPage,
   changeFilterType,
+  deleteCompleted,
   getTodoListRequest,
 } from '../../app/todo/actionCreators';
 import { getLastPage } from '../../app/todo/selectors';
-import Count from '../../types/ICount';
 import { AppDispatch, RootState } from '../../types/ReduxTypes';
 import { logOut } from '../../app/auth/actionCreators';
+import ICount from '../../types/ICount';
 
 interface IHomeProps {
   filterType: string;
@@ -27,12 +27,13 @@ interface IHomeProps {
   errorMessage: string;
   lastPage: number;
   limit: number;
-  count: Count;
+  count: ICount;
   userName: string;
   logOut(): void;
   getTodoList(page: number, filterType?: string): void;
   changeFilterType(filterType: string): void;
   changeCurrentPage(page: number): void;
+  delCompleted(page: number, filterType: string): void;
 }
 
 const Home = (props: IHomeProps) => {
@@ -48,22 +49,30 @@ const Home = (props: IHomeProps) => {
     changeFilterType,
     changeCurrentPage,
     lastPage,
+    delCompleted,
   } = props;
 
   return (
     <div className='home'>
       <ErrorMessage errorMessage={errorMessage} />
-      <CreateTodoField filterType={filterType} lastPage={lastPage} />
-      {count.all > 0 && (
-        <TodoList currentPage={currentPage} filterType={filterType} />
-      )}
-      <Filters
-        filters={FILTERS}
-        filterType={filterType}
-        getTodoList={getTodoList}
-        changeFilterType={changeFilterType}
-        changeCurrentPage={changeCurrentPage}
-      />
+      <div className='main-panel'>
+        <CreateTodoField filterType={filterType} lastPage={lastPage} />
+        {count.all > 0 && (
+          <TodoList currentPage={currentPage} filterType={filterType} />
+        )}
+        {count.all > 0 && (
+          <Filters
+            count={count}
+            filters={FILTERS}
+            filterType={filterType}
+            getTodoList={getTodoList}
+            changeFilterType={changeFilterType}
+            changeCurrentPage={changeCurrentPage}
+            delCompleted={delCompleted}
+          />
+        )}
+      </div>
+
       <Paginator
         count={count[filterType.toLowerCase()]}
         pageLimit={limit}
@@ -72,7 +81,6 @@ const Home = (props: IHomeProps) => {
         changeCurrentPage={changeCurrentPage}
         getTodoList={getTodoList}
       />
-      <Counter count={count} />
       <UserBlock user={{ email: userName }} logOut={logOut} />
     </div>
   );
@@ -99,6 +107,9 @@ const mapDispatchToProps = (dispatch: AppDispatch) => ({
   },
   getTodoList: (page: number, filterType?: string) =>
     dispatch(getTodoListRequest(page, filterType)),
+  delCompleted: (page: number, filterType?: string) => {
+    dispatch(deleteCompleted(page, filterType));
+  },
 });
 
 export default connect(mapStateToProps, mapDispatchToProps)(memo(Home));

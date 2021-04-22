@@ -14,7 +14,7 @@ const config = {
     username: DB_USERNAME,
     password: DB_PASSWORD,
     database: DB_NAME,
-    host: 'todo-db',
+    host: DB_HOST,
     dialect: DB_DIALECT,
     port: DB_PORT,
     logging: false,

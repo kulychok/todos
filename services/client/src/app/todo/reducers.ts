@@ -7,6 +7,7 @@ import {
   API_CALL_FAILURE,
   CHANGE_FILTER_TYPE,
   GET_TODO_LIST_SUCCESS,
+  DELETE_COMPLETED_SUCCESS,
 } from '../../constants/actionTypes';
 import { isValidTodoTitle } from '../../helpers/validators';
 
@@ -60,6 +61,7 @@ export const todoReducer = (state = initialState, action) => {
     }
     case DELETE_TODO_SUCCESS:
     case EDIT_TODO_SUCCESS:
+    case DELETE_COMPLETED_SUCCESS:
     case GET_TODO_LIST_SUCCESS: {
       stateCopy.todoList = { ...action.todoData.todoList };
       stateCopy.count = { ...action.todoData.count };

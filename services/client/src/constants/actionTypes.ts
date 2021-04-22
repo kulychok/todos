@@ -11,6 +11,7 @@ export const DELETE_TODO_SUCCESS = 'DELETE_TODO.Success';
 export const EDIT_TODO_SUCCESS = 'EDIT_TODO.Success';
 export const ADD_TODO_SUCCESS = 'ADD_TODO.Success';
 export const GET_TODO_LIST_SUCCESS = 'GET_TODO_LIST.Success';
+export const DELETE_COMPLETED_SUCCESS = 'DELETE_COMPLETED.Success';
 export const CHANGE_FILTER_TYPE = 'CHANGE_FILTER_TYPE';
 
 //saga requests actions
@@ -21,5 +22,8 @@ export const ADD_TODO_REQUEST = 'ADD_TODO.Request';
 export const DELETE_TODO_REQUEST = 'DELETE_TODO.Request';
 export const EDIT_TODO_REQUEST = 'EDIT_TODO.Request';
 export const GET_TODO_LIST_REQUEST = 'GET_TODO_LIST.Request';
+export const DELETE_COMPLETED_REQUEST = 'DELETE_COMPLETED.Request';
+export const PATCH_TO_ACTIVE_REQUEST = 'PATCH_TO_ACTIVE.Request';
+export const PATCH_TO_COMPLETED_REQUEST = 'PATCH_TO_COMPLETED.Request';
 
 export const API_CALL_FAILURE = 'API_CALL.Failure';

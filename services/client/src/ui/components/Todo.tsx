@@ -1,5 +1,6 @@
 import * as React from 'react';
 import { memo, useCallback, useState, ChangeEvent } from 'react';
+import STATUS from '../../constants/todoStatus';
 
 interface ITodoProps {
   id: number;
@@ -12,8 +13,8 @@ interface ITodoProps {
 
 const Todo = (props: ITodoProps) => {
   const { id, title, status, deleteTodo, editTodo } = props;
-
   const [stateTitle, setTitle] = useState('');
+  const [hideDel, setDelHidden] = useState('hidden');
 
   const onClickToggleHandler = useCallback(() => editTodo(id), [status]);
   const onClickDeleteHandler = useCallback(() => deleteTodo(id), [status]);
@@ -35,14 +36,25 @@ const Todo = (props: ITodoProps) => {
     [stateTitle]
   );
 
+  const completedClass =
+    status === STATUS.COMPLETED.value ? 'todo-completed' : '';
+
   return (
-    <li className='todos-item'>
+    <li
+      className='todos-item'
+      onMouseEnter={() => {
+        setDelHidden('');
+      }}
+      onMouseLeave={() => {
+        setDelHidden('hidden');
+      }}
+    >
       <div
         className={`status ${status.toLowerCase()}`}
         onClick={onClickToggleHandler}
       ></div>
       <div
-        className='todo-title'
+        className={`todo-title ${completedClass}`}
         contentEditable
         suppressContentEditableWarning
         spellCheck={false}
@@ -52,7 +64,9 @@ const Todo = (props: ITodoProps) => {
         {title}
       </div>
 
-      <div className='delete-item' onClick={onClickDeleteHandler}></div>
+      <div className={`delete-item ${hideDel}`} onClick={onClickDeleteHandler}>
+        ×
+      </div>
     </li>
   );
 };
