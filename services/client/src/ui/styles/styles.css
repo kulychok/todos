@@ -218,19 +218,23 @@ body {
   border-radius: 3px;
 }
 
+.current-status {
+  text-decoration: underline;
+  color: #cc9a9a;
+}
+
 .auth-panel {
-  width: 30vw;
-  height: 30vh;
+  width: 50%;
+  min-width: 500px;
+  min-height: 200px;
+  box-shadow: 0 2px 5px rgb(0 0 0/30%);
 
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 1fr 7fr;
+  grid-template-rows: 2 fr 7fr;
   grid-template-areas:
     'logIn signUp'
     'form form';
-
-  background-color: rgba(255, 255, 255, 0.603);
-  border-radius: 15px;
 }
 
 .auth-panel-button {
@@ -242,7 +246,7 @@ body {
 }
 
 .auth-panel-button:hover {
-  color: rgb(99, 35, 78);
+  color: #cc9a9a;
 }
 
 .auth-form {
@@ -266,9 +270,9 @@ body {
 
 .user-block {
   position: fixed;
-  left: 5vw;
-  top: 5vh;
-  color: #fff;
+  left: 3vw;
+  top: 3vw;
+  color: #777;
 }
 
 .log-out-button {
@@ -277,9 +281,18 @@ body {
 }
 
 .submit-btn {
-  width: 10vw;
+  width: 20%;
   align-self: center;
-  border-radius: 15px;
+  background-color: #777;
+  border: 0;
+  box-shadow: 0 2px 5px rgb(0 0 0/30%);
+  cursor: pointer;
+}
+
+.submit-btn:hover {
+  width: 20%;
+  align-self: center;
+  background-color: #cc9a9a;
   border: 0;
   cursor: pointer;
 }

@@ -46,7 +46,7 @@ const Filters = (props: IFilterProps) => {
 
   return (
     <div className='todo-list-footer'>
-      <div className='counter'>{`${count.all} items left`}</div>
+      <div className='counter'>{`${count.active} items left`}</div>
       <div className='filters'>
         {Object.values(filters).map(({ value, label }) => (
           <div

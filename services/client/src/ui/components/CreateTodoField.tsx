@@ -78,7 +78,7 @@ const CreateTodoField = (props: ICreateTodoFieldProps) => {
       </div>
       <input
         className={`input-field ${className}`}
-        placeholder='Whats needs to be done?'
+        placeholder='What needs to be done?'
         type='text'
         value={newTodoTitle}
         autoFocus

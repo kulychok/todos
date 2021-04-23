@@ -18,13 +18,17 @@ const Auth = (props: IAuthProps) => {
   return (
     <div className='auth-panel'>
       <div
-        className='auth-panel-button'
+        className={`auth-panel-button ${
+          authStatus === AUTH_STATUS.LOG_IN ? 'current-status' : ''
+        }`}
         onClick={() => changeAuthStatus(AUTH_STATUS.LOG_IN)}
       >
         Log in
       </div>
       <div
-        className='auth-panel-button'
+        className={`auth-panel-button ${
+          authStatus === AUTH_STATUS.SIGN_UP ? 'current-status' : ''
+        }`}
         onClick={() => changeAuthStatus(AUTH_STATUS.SIGN_UP)}
       >
         Sign up
