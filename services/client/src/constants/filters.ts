@@ -1,16 +1,7 @@
 const FILTERS = {
-  ALL: {
-    value: 'ALL',
-    label: 'all',
-  },
-  ACTIVE: {
-    value: 'ACTIVE',
-    label: 'active',
-  },
-  COMPLETED: {
-    value: 'COMPLETED',
-    label: 'completed',
-  },
+  ALL: 'all',
+  ACTIVE: 'active',
+  COMPLETED: 'completed',
 };
 
 export default FILTERS;

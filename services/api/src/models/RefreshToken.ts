@@ -22,6 +22,7 @@ export = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: 'RefreshToken',
+      tableName: 'RefreshToken',
     }
   );
   return RefreshToken;

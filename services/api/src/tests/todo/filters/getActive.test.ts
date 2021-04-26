@@ -1,12 +1,12 @@
 import agent from 'supertest-koa-agent';
-import { app, server } from '../../../../index';
-import db from '../../../../models';
-import { generateAccessToken } from '../../../../helpers/jwtHandlers';
-import { STATUS } from '../../../../constants/status';
+import { app, server } from '../../../index';
+import db from '../../../models';
+import { generateAccessToken } from '../../../helpers/jwtHandlers';
+import STATUS from '../../../constants/todo';
 
 const { User } = db;
 
-describe('getCompleted endpoint', () => {
+describe('getActive endpoint', () => {
   let userId = 1;
   let accessToken;
 
@@ -23,20 +23,18 @@ describe('getCompleted endpoint', () => {
 
   it('should work properly', async (done) => {
     const response = await agent(app)
-      .get(`/private/todo/completed`)
+      .get(`/private/todo/active`)
       .set('Cookie', `accessToken=${accessToken}`);
     expect(response.status).toBe(200);
     response.body.todoList.map((todo) => {
-      expect(todo).toEqual(
-        expect.objectContaining({ status: STATUS.COMPLETED })
-      );
+      expect(todo).toEqual(expect.objectContaining({ status: STATUS.ACTIVE }));
     });
 
     done();
   });
 
   it('should return 401', async (done) => {
-    const response = await agent(app).get(`/private/todo/completed`);
+    const response = await agent(app).get(`/private/todo/active`);
     expect(response.status).toBe(401);
 
     done();

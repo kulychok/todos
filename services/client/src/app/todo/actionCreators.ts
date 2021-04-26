@@ -5,6 +5,7 @@ import {
   CHANGE_CURRENT_PAGE,
   CHANGE_FILTER_TYPE,
   CHANGE_NEW_TODO_TITLE,
+  CHANGE_TOGGLE_ALL_STATUS,
   DELETE_COMPLETED_REQUEST,
   DELETE_COMPLETED_SUCCESS,
   DELETE_TODO_REQUEST,
@@ -61,10 +62,12 @@ export const addTodo = (
   };
 };
 
-export const changeNewTodoTitle = (newTodoTitle: string) => ({
-  type: CHANGE_NEW_TODO_TITLE,
-  newTodoTitle,
-});
+export const changeNewTodoTitle = (newTodoTitle: string) => {
+  return {
+    type: CHANGE_NEW_TODO_TITLE,
+    newTodoTitle,
+  };
+};
 
 export const changeCurrentPage = (page: number) => ({
   type: CHANGE_CURRENT_PAGE,
@@ -104,4 +107,8 @@ export const patchToCompleted = (page: number, filterType?: string) => ({
   type: PATCH_TO_COMPLETED_REQUEST,
   page,
   filterType,
+});
+
+export const changeToggleAllStatus = () => ({
+  type: CHANGE_TOGGLE_ALL_STATUS,
 });

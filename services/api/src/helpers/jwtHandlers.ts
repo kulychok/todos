@@ -1,11 +1,16 @@
-import jwt = require('jsonwebtoken');
+import jwt from 'jsonwebtoken';
+const config = require('../config');
 
-const generateAccessToken = (data: any): string => {
-  return jwt.sign(data, process.env.TOKEN_SECRET, { expiresIn: '1h' });
+interface TokenPayload {
+  userId: number;
+}
+
+const generateAccessToken = (data: TokenPayload): string => {
+  return jwt.sign(data, config.jwt.secret, config.jwt.options);
 };
 
-const verifyJWT = (token: string): { userId: number } => {
-  return jwt.verify(token, process.env.TOKEN_SECRET);
+const verifyJWT = (token: string): TokenPayload => {
+  return jwt.verify(token, config.jwt.secret);
 };
 
 export { verifyJWT, generateAccessToken };

@@ -3,16 +3,16 @@ import { memo } from 'react';
 
 interface IUserBlockProps {
   user: { email: string };
-  logOut(): void;
+  onClick(): void;
 }
 
 const UserBlock = (props: IUserBlockProps) => {
-  const { user, logOut } = props;
+  const { user, onClick } = props;
 
   return (
     <div className='user-block'>
       <div>{user.email}</div>
-      <div className='log-out-button' onClick={logOut}>
+      <div className='log-out-button' onClick={onClick}>
         Log out
       </div>
     </div>

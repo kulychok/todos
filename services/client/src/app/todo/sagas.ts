@@ -18,9 +18,9 @@ interface IGetTodoListAction {
 function* getTodoList(action: IGetTodoListAction) {
   try {
     let response;
-    if (action.filterType === FILTERS.COMPLETED.value) {
+    if (action.filterType === FILTERS.COMPLETED) {
       response = yield call(api.todo.getCompleted, action.page);
-    } else if (action.filterType === FILTERS.ACTIVE.value) {
+    } else if (action.filterType === FILTERS.ACTIVE) {
       response = yield call(api.todo.getActive, action.page);
     } else {
       response = yield call(api.todo.get, action.page);

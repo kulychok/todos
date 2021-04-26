@@ -13,6 +13,7 @@ export const ADD_TODO_SUCCESS = 'ADD_TODO.Success';
 export const GET_TODO_LIST_SUCCESS = 'GET_TODO_LIST.Success';
 export const DELETE_COMPLETED_SUCCESS = 'DELETE_COMPLETED.Success';
 export const CHANGE_FILTER_TYPE = 'CHANGE_FILTER_TYPE';
+export const CHANGE_TOGGLE_ALL_STATUS = 'CHANGE_TOGGLE_ALL_STATUS';
 
 //saga requests actions
 export const GET_USER_REQUEST = 'GET_USER.Request';

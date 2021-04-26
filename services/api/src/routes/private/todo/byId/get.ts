@@ -1,6 +1,6 @@
 import { Context } from 'koa';
 import { Op } from 'sequelize';
-import { STATUS } from '../../../../constants/status';
+import STATUS from '../../../../constants/todo';
 import { reject, resolve } from '../../../../helpers/resolvers';
 import db from '../../../../models';
 import { ITodo } from '../../../../types';

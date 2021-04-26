@@ -14,6 +14,7 @@ body {
   align-items: center;
 
   font-family: 'Roboto', sans-serif;
+  box-sizing: border-box;
 }
 
 .app {
@@ -28,6 +29,8 @@ body {
 }
 
 .home {
+  width: 50%;
+  max-width: 500px;
   display: flex;
   flex-direction: column;
   justify-content: start;
@@ -35,8 +38,8 @@ body {
 }
 
 .main-panel {
-  width: 50%;
-  min-width: 500px;
+  width: 100%;
+  max-width: 500px;
   box-shadow: 0 2px 5px rgb(0 0 0/30%);
 }
 
@@ -65,8 +68,8 @@ body {
 }
 
 .create-todo-panel {
-  width: 50%;
-  min-width: 500px;
+  width: 100%;
+  max-width: 500px;
   display: flex;
 }
 
@@ -80,17 +83,22 @@ body {
   align-self: center;
 }
 
-.toggle-all.completed {
+.toggle-all.active {
   opacity: 0.3;
 }
 
-/* .change-edges {
-  border-radius: 15px 15px 0 0;
-} */
+.todo-title.editing {
+  box-shadow: inset 0 0 0 1px #000;
+  width: 90%;
+  height: 100%;
+  margin-right: 15px;
+  border: none;
+  padding: 0 0 0 10px;
+}
 
 .todo-list {
-  width: 50%;
-  min-width: 500px;
+  width: 100%;
+  max-width: 500px;
 
   font-size: 2vw;
   padding: 0 0 1vh 0;
@@ -115,9 +123,9 @@ body {
 }
 
 .todo-list-footer {
-  width: 50%;
+  width: 100%;
   height: 7vh;
-  min-width: 500px;
+  max-width: 500px;
   background: rgba(0, 0, 0, 0.003);
   box-shadow: 0 1px 0 rgb(0 0 0/30%), 0 8px 0 -3px #f6f6f6,
     0 9px 1px -3px rgb(0 0 0 / 30%), 0 16px 0 -6px #f6f6f6,
@@ -185,8 +193,8 @@ body {
 }
 
 .status {
-  min-width: 40px;
-  min-height: 40px;
+  width: 40px;
+  height: 40px;
   margin: 0 0.5vw;
   cursor: pointer;
 }
@@ -225,13 +233,13 @@ body {
 
 .auth-panel {
   width: 50%;
-  min-width: 500px;
-  min-height: 200px;
+  max-width: 500px;
+  height: 150px;
   box-shadow: 0 2px 5px rgb(0 0 0/30%);
 
   display: grid;
   grid-template-columns: 1fr 1fr;
-  grid-template-rows: 2 fr 7fr;
+  grid-template-rows: 2fr 7fr;
   grid-template-areas:
     'logIn signUp'
     'form form';
@@ -309,7 +317,7 @@ body {
 
 .page-buttons {
   position: fixed;
-  min-width: 50%;
+  max-width: 50%;
   display: flex;
   justify-content: center;
   bottom: 3vh;

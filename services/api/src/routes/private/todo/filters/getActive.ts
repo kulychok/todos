@@ -1,14 +1,14 @@
 import db from '../../../../models/index';
 import { resolve } from '../../../../helpers/resolvers';
 import { PAGE_LIMIT } from '../../../../constants/pageLimit';
-import { STATUS } from '../../../../constants/status';
+import STATUS from '../../../../constants/todo';
 import getCount from '../../../../middleware/getCount';
 import { Context } from 'koa';
-import { IGetTodoListBody } from '../../../../types';
+import { IGetTodoListBody, Response } from '../../../../types';
 
 const { Todo } = db;
 
-export = async (ctx: Context): Promise<IGetTodoListBody> => {
+export = async (ctx: Context): Response<IGetTodoListBody> => {
   const { page = 0 } = ctx.query;
 
   const limit = PAGE_LIMIT;

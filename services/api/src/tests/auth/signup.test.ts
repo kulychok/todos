@@ -1,6 +1,6 @@
 import agent from 'supertest-koa-agent';
-import { app, server } from '../../../index';
-import db from '../../../models';
+import { app, server } from '../../index';
+import db from '../../models';
 
 const { User } = db;
 

@@ -4,7 +4,8 @@ import { generateAccessToken } from '../../../helpers/jwtHandlers';
 import { reject, resolve, wrongAuthData } from '../../../helpers/resolvers';
 import { isValidEmail, isValidPassword } from '../../../helpers/validators';
 import { Context } from 'koa';
-import { IFormatUser, IResponse } from '../../../types';
+import { IFormatUser, IResponse, Response } from '../../../types';
+import config from '../../../config';
 
 const { User, RefreshToken } = db;
 
@@ -12,7 +13,7 @@ interface ISignUpBody {
   user: IFormatUser;
 }
 
-export = async (ctx: Context): Promise<IResponse<ISignUpBody>> => {
+export = async (ctx: Context): Response<ISignUpBody> => {
   const { email, password } = ctx.request.body;
   if (!email || !password) {
     wrongAuthData(ctx);
@@ -38,7 +39,7 @@ export = async (ctx: Context): Promise<IResponse<ISignUpBody>> => {
 
   const hashedPassword = await bcrypt.hash(password, 12);
 
-  const refreshToken = await bcrypt.hash(process.env.BCRYPT_SECRET, 12);
+  const refreshToken = await bcrypt.hash(config.bcryptSecret, 12);
 
   const hashedRefreshToken = refreshToken;
 

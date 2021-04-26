@@ -1,6 +1,6 @@
 import agent from 'supertest-koa-agent';
-import { app, server } from '../../../index';
-import db from '../../../models';
+import { app, server } from '../../index';
+import db from '../../models';
 
 const { User } = db;
 
@@ -23,7 +23,7 @@ describe('logIn endpoint', () => {
     done();
   });
 
-  it('should return error because user is not defined', async (done) => {
+  it('should return error - user is not defined', async (done) => {
     const response = await agent(app)
       .post(`/auth/login`)
       .send({ email: 'uygfyusgryeugfdfgw32ds2@QFSDF.q', password: 'qwer12' });
@@ -32,7 +32,7 @@ describe('logIn endpoint', () => {
     done();
   });
 
-  it('should return error because wrong email', async (done) => {
+  it('should return error - wrong email', async (done) => {
     const response = await agent(app)
       .post(`/auth/login`)
       .send({ email: 'werdf32', password: 'qwer12' });
@@ -41,7 +41,7 @@ describe('logIn endpoint', () => {
     done();
   });
 
-  it('should return error because wrong password', async (done) => {
+  it('should return error - wrong password', async (done) => {
     const response = await agent(app)
       .post(`/auth/login`)
       .send({ email: 'qwerdsf@q.qqq', password: 'r2' });

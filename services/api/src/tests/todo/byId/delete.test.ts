@@ -1,12 +1,12 @@
 import agent from 'supertest-koa-agent';
-import { app, server } from '../../../../index';
-import db from '../../../../models';
-import { generateAccessToken } from '../../../../helpers/jwtHandlers';
-import { STATUS } from '../../../../constants/status';
+import { app, server } from '../../../index';
+import db from '../../../models';
+import { generateAccessToken } from '../../../helpers/jwtHandlers';
+import STATUS from '../../../constants/todo';
 
 const { User, Todo } = db;
 
-describe('getTodo endpoint', () => {
+describe('delete endpoint', () => {
   let userId = 1;
   const todoId = 1;
   let accessToken;
@@ -28,16 +28,16 @@ describe('getTodo endpoint', () => {
   });
 
   it('should work properly', async (done) => {
-    const response = await agent(app)
+    const deleteResponse = await agent(app)
+      .delete(`/private/todo/${todoId}`)
+      .set('Cookie', `accessToken=${accessToken}`)
+      .send({});
+    expect(deleteResponse.status).toBe(200);
+
+    const getResponse = await agent(app)
       .get(`/private/todo/${todoId}`)
       .set('Cookie', `accessToken=${accessToken}`);
-    expect(response.status).toBe(200);
-    expect(response.body).toEqual(
-      expect.objectContaining({
-        id: 1,
-        title: 'test',
-      })
-    );
+    expect(getResponse.status).toBe(404);
 
     done();
   });

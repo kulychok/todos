@@ -1,43 +1,48 @@
 import { connect } from 'react-redux';
 import * as React from 'react';
-import { useCallback, ChangeEvent } from 'react';
-import { changeAuthFields, logInHandler } from '../../app/auth/actionCreators';
+import { useCallback, useMemo } from 'react';
 import { memo } from 'react';
-import { AppDispatch, RootState } from '../../types';
+import { IAuthUser, RootState } from '../../types';
 
 interface ILogInProps {
   authUser: { email: string; password: string };
   emailErrorMessage: string;
   passwordErrorMessage: string;
-  logInHandler(email: string, password: string): void;
-  changeAuthFields(email: string, password: string): void;
+  onSubmit(): void;
+  onChange({ email, password, repeatedPassword }: IAuthUser): void;
 }
 
 const LogIn = (props: ILogInProps) => {
   const {
     authUser,
-    logInHandler,
-    changeAuthFields,
+    onSubmit,
+    onChange,
     emailErrorMessage,
     passwordErrorMessage,
   } = props;
-  // const status = React.useMemo(() => (error ? 'error' : 'valid'), [error]);
+
+  const isValid = useMemo(() => !passwordErrorMessage && !emailErrorMessage, [
+    passwordErrorMessage,
+    emailErrorMessage,
+  ]);
 
   const changeEmailHandler = useCallback(
-    (event: ChangeEvent<HTMLInputElement>) =>
-      changeAuthFields(event.target.value, authUser.password),
-    [authUser]
+    (event) => {
+      onChange({ email: event.target.value });
+    },
+    [authUser.password]
   );
 
   const changePasswordHandler = useCallback(
-    (event: ChangeEvent<HTMLInputElement>) =>
-      changeAuthFields(authUser.email, event.target.value),
-    [authUser]
+    (event) => {
+      onChange({ password: event.target.value });
+    },
+    [authUser.email]
   );
 
-  const logInSubmitHandler = useCallback(() => {
-    if (!passwordErrorMessage && !emailErrorMessage) {
-      logInHandler(authUser.email, authUser.password);
+  const submitHandler = useCallback(() => {
+    if (isValid) {
+      onSubmit();
     }
   }, [authUser]);
 
@@ -68,11 +73,7 @@ const LogIn = (props: ILogInProps) => {
         <div className='auth-error-message'>{passwordErrorMessage}</div>
       )}
 
-      <input
-        className='submit-btn'
-        type='submit'
-        onClick={logInSubmitHandler}
-      ></input>
+      <input className='submit-btn' type='submit' onClick={submitHandler} />
     </div>
   );
 };
@@ -83,13 +84,4 @@ const mapStateToProps = (state: RootState) => ({
   passwordErrorMessage: state.auth.passwordErrorMessage,
 });
 
-const mapDispatchToProps = (dispatch: AppDispatch) => ({
-  logInHandler: (email: string, password: string): void => {
-    dispatch(logInHandler(email, password));
-  },
-  changeAuthFields: (email: string, password: string): void => {
-    dispatch(changeAuthFields(email, password));
-  },
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(memo(LogIn));
+export default connect(mapStateToProps, null)(memo(LogIn));

@@ -16,6 +16,11 @@ module.exports = {
       },
     ],
   },
+  devServer: {
+    historyApiFallback: true,
+    contentBase: './',
+    hot: true,
+  },
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
   },

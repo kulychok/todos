@@ -5,18 +5,12 @@ import { Context, Next } from 'koa';
 const checkAuthorization = async (ctx: Context, next: Next): Promise<void> => {
   try {
     const authorization = ctx.cookies.get('accessToken');
-    if (!authorization) {
-      return reject(ctx, { status: 401 });
-    }
 
-    const token = authorization;
-    ctx.userId = verifyJWT(token).userId;
+    ctx.userId = verifyJWT(authorization).userId;
 
     await next();
   } catch (err) {
-    if (err.name === 'TokenExpiredError') {
-      return reject(ctx, { status: 401 });
-    }
+    return reject(ctx, { status: 401 });
   }
 };
 export default checkAuthorization;

@@ -16,11 +16,15 @@ export const signUpHandler = (email: string, password: string) => ({
   body: { email, password },
 });
 
-export const changeAuthFields = (
-  email: string,
-  password: string,
-  repeatedPassword?: string
-) => ({
+export const changeAuthFields = ({
+  email,
+  password,
+  repeatedPassword,
+}: {
+  email?: string;
+  password?: string;
+  repeatedPassword?: string;
+}) => ({
   type: CHANGE_AUTH_FIELDS,
   email,
   password,

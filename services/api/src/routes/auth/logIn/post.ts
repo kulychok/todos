@@ -4,6 +4,8 @@ import { generateAccessToken } from '../../../helpers/jwtHandlers';
 import { resolve, wrongAuthData } from '../../../helpers/resolvers';
 import { Context } from 'koa';
 import { IFormatUser } from '../../../types';
+import config from '../../../config';
+import { Response } from '../../../types';
 
 const { User, RefreshToken } = db;
 
@@ -11,24 +13,22 @@ interface ILogInBody {
   user: IFormatUser;
 }
 
-export = async (ctx: Context): Promise<ILogInBody> => {
+export = async (ctx: Context): Response<ILogInBody> => {
   const { email, password } = ctx.request.body;
 
   let user: typeof User = await User.findOne({ where: { email } });
 
   if (!user) {
-    wrongAuthData(ctx);
-    return;
+    return wrongAuthData(ctx);
   }
 
   const isMatch = await bcrypt.compare(password, user.password);
   if (!isMatch) {
-    wrongAuthData(ctx);
-    return;
+    return wrongAuthData(ctx);
   }
 
   const accessToken = generateAccessToken({ userId: user.id });
-  const refreshToken = await bcrypt.hash(process.env.BCRYPT_SECRET, 12);
+  const refreshToken = await bcrypt.hash(config.bcryptSecret, 12);
 
   await RefreshToken.update({ refreshToken }, { where: { UserId: user.id } });
 

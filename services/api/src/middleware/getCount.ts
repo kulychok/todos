@@ -1,6 +1,6 @@
 import db from '../models/index';
 import { Op } from 'sequelize';
-import { STATUS } from '../constants/status';
+import STATUS from '../constants/todo';
 import { Context } from 'koa';
 
 const { Todo } = db;

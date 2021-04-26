@@ -1,4 +1,4 @@
-import { STATUS } from '../../../../constants/status';
+import STATUS from '../../../../constants/todo';
 import { Op } from 'sequelize';
 import { reject, resolve } from '../../../../helpers/resolvers';
 import db from '../../../../models/index';

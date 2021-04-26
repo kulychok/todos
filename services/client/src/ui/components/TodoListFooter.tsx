@@ -1,23 +1,13 @@
 import * as React from 'react';
 import { memo } from 'react';
-import { ReactElement, useCallback } from 'react';
-import FILTERS from '../../constants/filters';
 import { ICount } from '../../types';
 
 interface IFilterProps {
   count: ICount;
-  filters: IFilters;
+  filters: { ALL: string; ACTIVE: string; COMPLETED: string };
   filterType: string;
-  getTodoList(page: number, filterType: string): void;
-  changeFilterType(filterType: string): void;
-  changeCurrentPage(page: number): void;
-  delCompleted(page: number, filterType: string): void;
-}
-
-interface IFilters {
-  ALL: { value: string; label: string };
-  ACTIVE: { value: string; label: string };
-  COMPLETED: { value: string; label: string };
+  onClickFilterBtn(filterType: string): void;
+  onClickDeleteBtn(): void;
 }
 
 const Filters = (props: IFilterProps) => {
@@ -25,22 +15,9 @@ const Filters = (props: IFilterProps) => {
     count,
     filters,
     filterType,
-    getTodoList,
-    changeFilterType,
-    changeCurrentPage,
-    delCompleted,
+    onClickFilterBtn,
+    onClickDeleteBtn,
   } = props;
-
-  const handleClick = useCallback((value) => {
-    changeFilterType(value);
-    getTodoList(0, value);
-    changeCurrentPage(0);
-  }, []);
-
-  const handleBtnClick = useCallback(() => {
-    changeFilterType(FILTERS.ALL.value);
-    delCompleted(0, filterType);
-  }, []);
 
   const hiddenClass = count.completed ? '' : 'hidden';
 
@@ -48,22 +25,22 @@ const Filters = (props: IFilterProps) => {
     <div className='todo-list-footer'>
       <div className='counter'>{`${count.active} items left`}</div>
       <div className='filters'>
-        {Object.values(filters).map(({ value, label }) => (
+        {Object.values(filters).map((filter) => (
           <div
-            key={label}
+            key={filter}
             className={`
             filter-button
-            ${filterType === value ? 'current' : ''}
+            ${filterType === filter ? 'current' : ''}
           `}
-            onClick={() => handleClick(value)}
+            onClick={() => onClickFilterBtn(filter)}
           >
-            {label}
+            {filter}
           </div>
         ))}
       </div>
       <button
         className={`clear-completed-button ${hiddenClass}`}
-        onClick={handleBtnClick}
+        onClick={onClickDeleteBtn}
       >
         Clear completed
       </button>

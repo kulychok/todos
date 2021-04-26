@@ -2,61 +2,42 @@ import { connect } from 'react-redux';
 import * as React from 'react';
 import { useCallback, ChangeEvent } from 'react';
 import { changeAuthFields, signUpHandler } from '../../app/auth/actionCreators';
-import { AppDispatch, RootState } from '../../types';
+import { AppDispatch, IAuthUser, RootState } from '../../types';
 import { memo } from 'react';
 
 interface ISignUpProps {
   authUser: { email: string; password: string; repeatedPassword?: string };
   emailErrorMessage: string;
   passwordErrorMessage: string;
-  signUpHandler(email: string, password: string): void;
-  changeAuthFields(
-    email: string,
-    password: string,
-    repeatedPassword?: string
-  ): void;
+  onSubmit(): void;
+  onChange({}: IAuthUser): void;
 }
 
 const SignUp = (props: ISignUpProps) => {
   const {
     authUser,
-    signUpHandler,
-    changeAuthFields,
+    onSubmit,
+    onChange,
     emailErrorMessage,
     passwordErrorMessage,
   } = props;
 
   const changeEmailHandler = useCallback(
-    (event: ChangeEvent<HTMLInputElement>) =>
-      changeAuthFields(
-        event.target.value,
-        authUser.password,
-        authUser.repeatedPassword
-      ),
-    [authUser]
+    (event) => onChange({ email: event.target.value }),
+    [authUser.password, authUser.repeatedPassword]
   );
 
   const changePasswordHandler = useCallback(
-    (event: ChangeEvent<HTMLInputElement>) =>
-      changeAuthFields(
-        authUser.email,
-        event.target.value,
-        authUser.repeatedPassword
-      ),
-    [authUser]
+    (event) => onChange({ password: event.target.value }),
+    [authUser.email, authUser.repeatedPassword]
   );
 
   const changeRepeatedPasswordHandler = useCallback(
-    (event: ChangeEvent<HTMLInputElement>) =>
-      changeAuthFields(authUser.email, authUser.password, event.target.value),
-    [authUser]
+    (event) => onChange({ repeatedPassword: event.target.value }),
+    [authUser.password, authUser.repeatedPassword]
   );
 
-  const signUpSubmitHandler = useCallback(() => {
-    if (authUser.password === authUser.repeatedPassword) {
-      signUpHandler(authUser.email, authUser.password);
-    }
-  }, [authUser]);
+  const signUpSubmitHandler = useCallback(onSubmit, [authUser]);
 
   return (
     <div className='auth-form'>
@@ -102,14 +83,4 @@ const mapStateToProps = (state: RootState) => ({
   passwordErrorMessage: state.auth.passwordErrorMessage,
 });
 
-const mapDispatchToProps = (dispatch: AppDispatch) => ({
-  signUpHandler: (email: string, password: string) =>
-    dispatch(signUpHandler(email, password)),
-  changeAuthFields: (
-    email: string,
-    password: string,
-    repeatedPassword?: string
-  ) => dispatch(changeAuthFields(email, password, repeatedPassword)),
-});
-
-export default connect(mapStateToProps, mapDispatchToProps)(memo(SignUp));
+export default connect(mapStateToProps, null)(memo(SignUp));

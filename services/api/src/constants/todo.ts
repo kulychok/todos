@@ -1,4 +1,4 @@
-export const STATUS = {
+export default {
   ACTIVE: 'ACTIVE',
   COMPLETED: 'COMPLETED',
   DELETED: 'DELETED',

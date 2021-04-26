@@ -1,78 +1,55 @@
 import { connect } from 'react-redux';
 import * as React from 'react';
-import { useCallback, useState, memo } from 'react';
+import { useCallback, useState, memo, useMemo } from 'react';
 import STATUS from '../../constants/todoStatus';
-import {
-  addTodo,
-  changeCurrentPage,
-  changeNewTodoTitle,
-  patchToActive,
-  patchToCompleted,
-} from '../../app/todo/actionCreators';
-import { AppDispatch, RootState } from '../../types';
+import { changeNewTodoTitle } from '../../app/todo/actionCreators';
+import { RootState } from '../../types';
 
 interface ICreateTodoFieldProps {
   newTodoTitle: string;
+  toggleAllStatus: string;
   countAll: number;
-  filterType: string;
-  lastPage: number;
-  addTodo(title: string): void;
-  changeNewTodoTitle(newTodoTitle: string): void;
-  changeCurrentPage(): void;
-  patchToActive(): void;
-  patchToCompleted(): void;
+  onKeyPress(): void;
+  toggleAll(): void;
+  onChange(newTodoTitle: string): void;
+  onKeyPress(): void;
 }
 
 const CreateTodoField = (props: ICreateTodoFieldProps) => {
   const {
     newTodoTitle,
+    toggleAllStatus,
     countAll,
-    addTodo,
-    changeNewTodoTitle,
-    changeCurrentPage,
-    patchToActive,
-    patchToCompleted,
+    onKeyPress,
+    onChange,
+    toggleAll,
   } = props;
 
-  const [toggleAllStatus, setToggleAllStatus] = useState(
-    STATUS.COMPLETED.label
-  );
+  const className = useMemo(() => (countAll > 0 ? 'with-todo-list' : ''), [
+    countAll,
+  ]);
 
-  const handleChange = useCallback(
-    (event: React.SyntheticEvent<HTMLInputElement>) => {
-      changeNewTodoTitle((event.target as HTMLTextAreaElement).value);
+  const changeHandler = useCallback(
+    (event) => {
+      onChange(event.target.value);
     },
-    []
+    [newTodoTitle]
   );
 
-  const handleKeyPress = useCallback(
+  const keyPressHandler = useCallback(
     (event) => {
       if (event.key === 'Enter') {
-        addTodo(newTodoTitle);
-        changeCurrentPage();
+        onKeyPress();
       }
     },
     [newTodoTitle]
   );
 
-  const toggleAllHandler = useCallback(() => {
-    if (toggleAllStatus === STATUS.COMPLETED.label) {
-      patchToCompleted();
-      setToggleAllStatus(STATUS.ACTIVE.label);
-    } else {
-      patchToActive();
-      setToggleAllStatus(STATUS.COMPLETED.label);
-    }
-  }, [toggleAllStatus]);
-
-  let className = '';
-  countAll > 0 && (className = 'with-todo-list');
-
   return (
     <div className='create-todo-panel'>
       <div
-        className={`toggle-all ${toggleAllStatus}`}
-        onClick={toggleAllHandler}
+        className={`toggle-all ${STATUS[toggleAllStatus].label}`}
+        onClick={toggleAll}
       >
         ❯
       </div>
@@ -82,8 +59,8 @@ const CreateTodoField = (props: ICreateTodoFieldProps) => {
         type='text'
         value={newTodoTitle}
         autoFocus
-        onChange={handleChange}
-        onKeyPress={handleKeyPress}
+        onChange={changeHandler}
+        onKeyPress={keyPressHandler}
       ></input>
     </div>
   );
@@ -92,24 +69,10 @@ const CreateTodoField = (props: ICreateTodoFieldProps) => {
 const mapStateToProps = (state: RootState) => ({
   newTodoTitle: state.todo.newTodoTitle,
   countAll: state.todo.count.all,
+  toggleAllStatus: state.todo.toggleAllStatus,
 });
 
-//own props?
-
-const mapDispatchToProps = (dispatch: AppDispatch, ownProps) => {
-  const { lastPage, filterType } = ownProps;
-  return {
-    addTodo: (title: string) =>
-      dispatch(addTodo(title, STATUS.ACTIVE.value, lastPage, filterType)),
-    changeNewTodoTitle: (newTodoTitle: string) =>
-      dispatch(changeNewTodoTitle(newTodoTitle)),
-    changeCurrentPage: () => {
-      dispatch(changeCurrentPage(lastPage));
-    },
-    patchToActive: () => dispatch(patchToActive(0, filterType)),
-    patchToCompleted: () => dispatch(patchToCompleted(0, filterType)),
-  };
-};
+const mapDispatchToProps = { onChange: changeNewTodoTitle };
 
 export default connect(
   mapStateToProps,
