@@ -4,15 +4,14 @@ import { BrowserRouter as Router } from 'react-router-dom';
 import AppRouter from './router';
 import { connect } from 'react-redux';
 import Header from './ui/components/Header';
-
 import { getTodoListRequest } from './app/todo/actionCreators';
-import { AppDispatch, RootState } from './types/ReduxTypes';
-import { getUser as getUserRequest } from './app/auth/actionCreators';
+import { getUser } from './app/auth/actionCreators';
+import { RootState } from './types/ReduxTypes';
 
 interface IAppProps {
   isAuthorized: boolean;
   getUser(): void;
-  getTodoList(page?: number): void;
+  getTodoList(page?: number, filterType?: string): void;
 }
 
 const App = (props: IAppProps) => {
@@ -35,9 +34,9 @@ const mapStateToProps = (state: RootState) => ({
   isAuthorized: state.auth.isAuthorized,
 });
 
-const mapDispatchToProps = (dispatch: AppDispatch) => ({
-  getUser: () => dispatch(getUserRequest()),
-  getTodoList: (page = 0) => dispatch(getTodoListRequest(page)),
-});
+const mapDispatchToProps = {
+  getUser,
+  getTodoList: getTodoListRequest,
+};
 
 export default connect(mapStateToProps, mapDispatchToProps)(memo(App));

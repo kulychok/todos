@@ -11,7 +11,7 @@ const {
   BCRYPT_SECRET,
 } = process.env;
 
-export = {
+module.exports = {
   development: {
     username: DB_USERNAME,
     password: DB_PASSWORD,

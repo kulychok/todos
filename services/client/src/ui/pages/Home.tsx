@@ -1,6 +1,6 @@
 import { connect } from 'react-redux';
 import * as React from 'react';
-import { memo, useCallback, useCallback, useCallback } from 'react';
+import { memo, useCallback } from 'react';
 import ErrorMessage from '../components/ErrorMessage';
 import CreateTodoField from '../components/CreateTodoField';
 import TodoList from '../components/TodoList';
@@ -145,12 +145,7 @@ const Home = (props: IHomeProps) => {
           toggleAll={createTodoField.onClick}
         />
         {count.all > 0 && (
-          <TodoList
-            currentPage={currentPage}
-            filterType={filterType}
-            onClick={todoList.onClick}
-            onChange={todoList.onChange}
-          />
+          <TodoList onClick={todoList.onClick} onChange={todoList.onChange} />
         )}
         {count.all > 0 && (
           <TodoListFooter

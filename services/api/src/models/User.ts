@@ -7,6 +7,7 @@ export = (sequelize, DataTypes) => {
     public id!: number;
     public email: string;
     public password: string;
+    public revoked: boolean;
     public readonly createdAt!: Date;
     public readonly updatedAt!: Date;
 
@@ -27,6 +28,7 @@ export = (sequelize, DataTypes) => {
     {
       email: DataTypes.STRING,
       password: DataTypes.STRING,
+      revoked: DataTypes.BOOLEAN,
     },
     {
       sequelize,
