@@ -1,8 +1,8 @@
-import router = require('koa-router');
+import Router = require('koa-router');
 import getActive = require('./getActive');
 import getCompleted = require('./getCompleted');
 
-const filterRoutes = router();
+const filterRoutes = new Router();
 
 filterRoutes.get('/active', getActive);
 

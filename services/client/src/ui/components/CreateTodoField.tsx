@@ -1,85 +1,78 @@
 import { connect } from 'react-redux';
 import * as React from 'react';
-import { memo } from 'react';
-import { useCallback } from 'react';
+import { useCallback, useState, memo, useMemo } from 'react';
 import STATUS from '../../constants/todoStatus';
-import {
-  addTodo,
-  changeCurrentPage,
-  changeNewTodoTitle,
-} from '../../app/todo/actionCreators';
-import { AppDispatch, RootState } from '../../types';
+import { changeNewTodoTitle } from '../../app/todo/actionCreators';
+import { RootState } from '../../types';
 
 interface ICreateTodoFieldProps {
   newTodoTitle: string;
+  toggleAllStatus: string;
   countAll: number;
-  filterType: string;
-  lastPage: number;
-  addTodo(title: string): void;
-  changeNewTodoTitle(newTodoTitle: string): void;
-  changeCurrentPage(): void;
+  onKeyPress(): void;
+  toggleAll(): void;
+  onChange(newTodoTitle: string): void;
+  onKeyPress(): void;
 }
 
 const CreateTodoField = (props: ICreateTodoFieldProps) => {
   const {
     newTodoTitle,
+    toggleAllStatus,
     countAll,
-    addTodo,
-    changeNewTodoTitle,
-    changeCurrentPage,
+    onKeyPress,
+    onChange,
+    toggleAll,
   } = props;
 
-  const handleChange = useCallback(
-    (event: React.SyntheticEvent<HTMLInputElement>) => {
-      changeNewTodoTitle((event.target as HTMLTextAreaElement).value);
+  const className = useMemo(() => (countAll > 0 ? 'with-todo-list' : ''), [
+    countAll,
+  ]);
+
+  const changeHandler = useCallback(
+    (event) => {
+      onChange(event.target.value);
     },
-    []
+    [newTodoTitle]
   );
 
-  const handleKeyPress = useCallback(
+  const keyPressHandler = useCallback(
     (event) => {
       if (event.key === 'Enter') {
-        addTodo(newTodoTitle);
-        changeCurrentPage();
+        onKeyPress();
       }
     },
     [newTodoTitle]
   );
 
-  let className = '';
-  countAll > 0 && (className = 'change-edges');
-
   return (
-    <input
-      className={`input-field ${className}`}
-      type='text'
-      value={newTodoTitle}
-      autoFocus
-      onChange={handleChange}
-      onKeyPress={handleKeyPress}
-    ></input>
+    <div className='create-todo-panel'>
+      <div
+        className={`toggle-all ${STATUS[toggleAllStatus].label}`}
+        onClick={toggleAll}
+      >
+        ❯
+      </div>
+      <input
+        className={`input-field ${className}`}
+        placeholder='What needs to be done?'
+        type='text'
+        value={newTodoTitle}
+        autoFocus
+        onChange={changeHandler}
+        onKeyPress={keyPressHandler}
+      ></input>
+    </div>
   );
 };
 
 const mapStateToProps = (state: RootState) => ({
   newTodoTitle: state.todo.newTodoTitle,
   countAll: state.todo.count.all,
+  toggleAllStatus: state.todo.toggleAllStatus,
 });
 
-//own props?
-
-const mapDispatchToProps = (dispatch: AppDispatch, ownProps) => {
-  const { lastPage, filterType } = ownProps;
-  return {
-    addTodo: (title: string) =>
-      dispatch(addTodo(title, STATUS.ACTIVE.value, lastPage, filterType)),
-    changeNewTodoTitle: (newTodoTitle: string) =>
-      dispatch(changeNewTodoTitle(newTodoTitle)),
-    changeCurrentPage: () => {
-      dispatch(changeCurrentPage(lastPage));
-    },
-  };
-};
+const mapDispatchToProps = { onChange: changeNewTodoTitle };
 
 export default connect(
   mapStateToProps,

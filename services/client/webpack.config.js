@@ -11,10 +11,15 @@ module.exports = {
       { test: /\.(ts|tsx)$/, use: 'ts-loader' },
 
       {
-        test: /\.(png|jpe?g|gif)$/i,
+        test: /\.(png|jpe?g|gif|svg)$/i,
         use: 'file-loader',
       },
     ],
+  },
+  devServer: {
+    historyApiFallback: true,
+    contentBase: './',
+    hot: true,
   },
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],

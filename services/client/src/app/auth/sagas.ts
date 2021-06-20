@@ -36,7 +36,7 @@ interface IAuthAction {
 
 function* login(action: IAuthAction) {
   try {
-    const response: IUserRequest = yield call(api.user.login, action.body);
+    const response = yield call(api.user.login, action.body);
 
     const { user } = response;
 

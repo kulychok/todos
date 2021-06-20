@@ -2,10 +2,18 @@ import bcrypt = require('bcrypt');
 import db from '../../../models';
 import { generateAccessToken } from '../../../helpers/jwtHandlers';
 import { resolve, wrongAuthData } from '../../../helpers/resolvers';
+import { Context } from 'koa';
+import { IFormatUser } from '../../../types';
+import config from '../../../config';
+import { Response } from '../../../types';
 
 const { User, RefreshToken } = db;
 
-export = async (ctx): Promise<object> => {
+interface ILogInBody {
+  user: IFormatUser;
+}
+
+export = async (ctx: Context): Response<ILogInBody> => {
   const { email, password } = ctx.request.body;
 
   let user: typeof User = await User.findOne({ where: { email } });
@@ -20,7 +28,7 @@ export = async (ctx): Promise<object> => {
   }
 
   const accessToken = generateAccessToken({ userId: user.id });
-  const refreshToken = await bcrypt.hash(process.env.BCRYPT_SECRET, 12);
+  const refreshToken = await bcrypt.hash(config.bcryptSecret, 12);
 
   await RefreshToken.update({ refreshToken }, { where: { UserId: user.id } });
 

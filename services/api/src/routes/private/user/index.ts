@@ -1,7 +1,7 @@
-import router = require('koa-router');
+import Router = require('koa-router');
 import get = require('./get');
 
-const userRoutes = router();
+const userRoutes = new Router();
 
 userRoutes.get('/', get);
 

@@ -1,9 +1,9 @@
-import router = require('koa-router');
+import Router = require('koa-router');
 import getAccessToken = require('./getAccessToken');
 import logIn = require('./logIn');
 import signUp = require('./signUp');
 
-const authRoutes = router();
+const authRoutes = new Router();
 
 authRoutes.use(signUp);
 authRoutes.use(logIn);

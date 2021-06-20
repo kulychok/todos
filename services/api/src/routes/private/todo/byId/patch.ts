@@ -1,15 +1,18 @@
-import { STATUS } from '../../../../constants/status';
-import { resolve } from '../../../../helpers/resolvers';
+import STATUS from '../../../../constants/todo';
+import { reject, resolve } from '../../../../helpers/resolvers';
+import { Op } from 'sequelize';
 import db from '../../../../models/index';
+import { Context } from 'koa';
 
 const { Todo } = db;
+const { not } = Op;
 
-export default async (ctx): Promise<object> => {
+export default async (ctx: Context): Promise<void> => {
   const { id } = ctx.params;
   const { title } = ctx.request.body;
 
   const todo = await Todo.findOne({
-    where: { UserId: ctx.userId, id },
+    where: { UserId: ctx.userId, id, [not]: { status: STATUS.DELETED } },
   });
 
   if (todo) {
@@ -23,5 +26,5 @@ export default async (ctx): Promise<object> => {
 
     return resolve(ctx, { status: 200 });
   }
-  return resolve(ctx, { status: 400, message: 'Todo not found' });
+  reject(ctx, { status: 400, message: 'Todo not found' });
 };

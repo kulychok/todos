@@ -1,34 +1,45 @@
 import db from '../../../models/';
 import bcrypt = require('bcrypt');
 import { generateAccessToken } from '../../../helpers/jwtHandlers';
-import { resolve, wrongAuthData } from '../../../helpers/resolvers';
+import { reject, resolve, wrongAuthData } from '../../../helpers/resolvers';
 import { isValidEmail, isValidPassword } from '../../../helpers/validators';
+import { Context } from 'koa';
+import { IFormatUser, IResponse, Response } from '../../../types';
+import config from '../../../config';
 
 const { User, RefreshToken } = db;
 
-export = async (ctx): Promise<object> => {
+interface ISignUpBody {
+  user: IFormatUser;
+}
+
+export = async (ctx: Context): Response<ISignUpBody> => {
   const { email, password } = ctx.request.body;
   if (!email || !password) {
-    return wrongAuthData(ctx);
+    wrongAuthData(ctx);
+    return;
   }
 
   if (!isValidEmail(email)) {
-    return wrongAuthData(ctx);
+    wrongAuthData(ctx);
+    return;
   }
   const isAlreadySigned = await User.findOne({ where: { email } });
   if (isAlreadySigned) {
-    return resolve(ctx, {
+    reject(ctx, {
       message: 'This email already signed up',
     });
+    return;
   }
 
   if (!isValidPassword(password)) {
-    return wrongAuthData(ctx);
+    wrongAuthData(ctx);
+    return;
   }
 
   const hashedPassword = await bcrypt.hash(password, 12);
 
-  const refreshToken = await bcrypt.hash(process.env.BCRYPT_SECRET, 12);
+  const refreshToken = await bcrypt.hash(config.bcryptSecret, 12);
 
   const hashedRefreshToken = refreshToken;
 

@@ -65,6 +65,7 @@ export const authReducer = (state = initialState, action) => {
       stateCopy.passwordErrorMessage = '';
 
       stateCopy.authUser = { email, password, repeatedPassword };
+
       return stateCopy;
     }
     case LOG_OUT: {

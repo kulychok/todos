@@ -7,14 +7,16 @@ const {
   DB_HOST,
   DB_DIALECT,
   DB_PORT,
+  TOKEN_SECRET,
+  BCRYPT_SECRET,
 } = process.env;
 
-const config = {
+module.exports = {
   development: {
     username: DB_USERNAME,
     password: DB_PASSWORD,
     database: DB_NAME,
-    host: 'todo-db',
+    host: DB_HOST,
     dialect: DB_DIALECT,
     port: DB_PORT,
     logging: false,
@@ -23,7 +25,7 @@ const config = {
     username: DB_USERNAME,
     password: DB_PASSWORD,
     database: DB_NAME,
-    host: 'todo-db',
+    host: DB_HOST,
     dialect: DB_DIALECT,
     port: DB_PORT,
     logging: false,
@@ -32,11 +34,14 @@ const config = {
     username: DB_USERNAME,
     password: DB_PASSWORD,
     database: DB_NAME,
-    host: 'todo-db',
+    host: DB_HOST,
     dialect: DB_DIALECT,
     port: DB_PORT,
     logging: false,
   },
+  jwt: {
+    secret: TOKEN_SECRET,
+    options: { expiresIn: '1h' },
+  },
+  bcryptSecret: BCRYPT_SECRET,
 };
-
-module.exports = config;

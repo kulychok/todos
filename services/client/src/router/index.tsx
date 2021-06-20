@@ -3,7 +3,7 @@ import { Switch, Route, Redirect } from 'react-router-dom';
 import AuthContainer from '../ui/pages/Auth';
 import HomeContainer from '../ui/pages/Home';
 
-export const routes = (isAuthorized: boolean) => {
+export default ({ isAuthorized }: { isAuthorized: boolean }) => {
   if (isAuthorized) {
     return (
       <Switch>

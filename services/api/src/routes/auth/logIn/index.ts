@@ -1,7 +1,7 @@
-import router = require('koa-router');
+import Router = require('koa-router');
 import post = require('./post');
 
-const logIn = router();
+const logIn = new Router();
 
 logIn.post('/login', post);
 

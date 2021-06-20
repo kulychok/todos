@@ -5,8 +5,6 @@ import { ITodoListRequest } from '../../types';
 import {
   addTodoSuccess,
   apiCallFailure,
-  deleteTodoSuccess,
-  editTodoSuccess,
   getTodoListRequest,
   getTodoListSuccess,
 } from './actionCreators';
@@ -20,9 +18,9 @@ interface IGetTodoListAction {
 function* getTodoList(action: IGetTodoListAction) {
   try {
     let response;
-    if (action.filterType === FILTERS.COMPLETED.value) {
+    if (action.filterType === FILTERS.COMPLETED) {
       response = yield call(api.todo.getCompleted, action.page);
-    } else if (action.filterType === FILTERS.ACTIVE.value) {
+    } else if (action.filterType === FILTERS.ACTIVE) {
       response = yield call(api.todo.getActive, action.page);
     } else {
       response = yield call(api.todo.get, action.page);
@@ -66,8 +64,6 @@ function* deleteTodo(action: IDeleteTodoAction) {
     yield call(api.todo.del, action.id);
 
     yield getTodoList(getTodoListRequest(action.page, action.filterType));
-
-    yield put(deleteTodoSuccess());
   } catch (error) {
     yield put(apiCallFailure(error));
   }
@@ -88,8 +84,36 @@ function* editTodo(action: IEditTodoAction) {
     });
 
     yield getTodoList(getTodoListRequest(action.page, action.filterType));
+  } catch (error) {
+    yield put(apiCallFailure(error));
+  }
+}
 
-    yield put(editTodoSuccess());
+function* deleteCompletedTodo(action: IGetTodoListAction) {
+  try {
+    yield call(api.todo.deleteCompleted);
+
+    yield getTodoList(getTodoListRequest(action.page, action.filterType));
+  } catch (error) {
+    yield put(apiCallFailure(error));
+  }
+}
+
+function* patchToActive(action: IGetTodoListAction) {
+  try {
+    yield call(api.todo.patchToActive);
+
+    yield getTodoList(getTodoListRequest(action.page, action.filterType));
+  } catch (error) {
+    yield put(apiCallFailure(error));
+  }
+}
+
+function* patchToCompleted(action: IGetTodoListAction) {
+  try {
+    yield call(api.todo.patchToCompleted);
+
+    yield getTodoList(getTodoListRequest(action.page, action.filterType));
   } catch (error) {
     yield put(apiCallFailure(error));
   }
@@ -100,4 +124,7 @@ export default {
   del: deleteTodo,
   add: addTodo,
   edit: editTodo,
+  delCompleted: deleteCompletedTodo,
+  patchToCompleted,
+  patchToActive,
 };

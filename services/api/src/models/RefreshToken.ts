@@ -4,6 +4,12 @@ import { Model } from 'sequelize';
 
 export = (sequelize, DataTypes) => {
   class RefreshToken extends Model {
+    public id!: number;
+    public refreshToken: string;
+    public UserId: number;
+    public readonly createdAt: Date;
+    public readonly updatedAt: Date;
+
     static associate(models) {
       RefreshToken.belongsTo(models.User);
     }
@@ -16,6 +22,7 @@ export = (sequelize, DataTypes) => {
     {
       sequelize,
       modelName: 'RefreshToken',
+      tableName: 'RefreshToken',
     }
   );
   return RefreshToken;

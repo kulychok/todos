@@ -7,16 +7,20 @@ import {
   API_CALL_FAILURE,
   CHANGE_FILTER_TYPE,
   GET_TODO_LIST_SUCCESS,
+  DELETE_COMPLETED_SUCCESS,
+  CHANGE_TOGGLE_ALL_STATUS,
 } from '../../constants/actionTypes';
+import STATUS from '../../constants/todoStatus';
 import { isValidTodoTitle } from '../../helpers/validators';
 
 const initialState = {
   todoList: null,
-  filterType: 'ALL',
+  filterType: 'all',
   currentPage: 0,
   limit: 0,
   countPage: 0,
   count: { all: 0, active: 0, completed: 0 },
+  toggleAllStatus: STATUS.ACTIVE.value,
   newTodoTitle: '',
   errorMessage: '',
 };
@@ -39,20 +43,6 @@ export const todoReducer = (state = initialState, action) => {
 
       break;
     }
-    // case 'CHANGE_TODO_TITLE': {
-    //   if (isValidTodoTitle(action.newTodoTitle)) {
-    //     for (let i in stateCopy.todoList) {
-    //       if (stateCopy.todoList[i].id === action.id) {
-    //         stateCopy.todoList[i].title = action.newTodoTitle;
-    //       }
-    //     }
-    //     stateCopy.errorMessage = '';
-    //   } else {
-    //     stateCopy.errorMessage = 'You can type only letters and numbers';
-    //   }
-
-    //   break;
-    // }
     case CHANGE_CURRENT_PAGE: {
       stateCopy.currentPage = action.page;
 
@@ -60,6 +50,7 @@ export const todoReducer = (state = initialState, action) => {
     }
     case DELETE_TODO_SUCCESS:
     case EDIT_TODO_SUCCESS:
+    case DELETE_COMPLETED_SUCCESS:
     case GET_TODO_LIST_SUCCESS: {
       stateCopy.todoList = { ...action.todoData.todoList };
       stateCopy.count = { ...action.todoData.count };
@@ -75,6 +66,19 @@ export const todoReducer = (state = initialState, action) => {
     }
     case CHANGE_FILTER_TYPE: {
       stateCopy.filterType = action.filterType;
+
+      break;
+    }
+    case CHANGE_TOGGLE_ALL_STATUS: {
+      if (
+        stateCopy.count.all === stateCopy.count.active ||
+        stateCopy.count.all === stateCopy.count.completed
+      ) {
+        stateCopy.toggleAllStatus =
+          stateCopy.toggleAllStatus === STATUS.ACTIVE.value
+            ? STATUS.COMPLETED.value
+            : STATUS.ACTIVE.value;
+      }
 
       break;
     }
